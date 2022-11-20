@@ -32,7 +32,7 @@
       </p>
 
       <p>
-        Red Tape Reviewer is an attempt to solve the presented issues. The main purpose of the application is centralization of existent publicly available data, and data obtained during the lifespan of the application (e.g. reviews from the 
+        Red Tape Reviewer is an attempt to solve the presented issues. The main purpose of the application is centralization of existent publicly available data (using the data stored on <a href="https://data.gov.ro/dataset" target="_blank">data.gov</a> website), and data obtained during the lifespan of the application (e.g. reviews from the 
         app's users), and sharing all of it through a web portal.
       </p>
     </section>
@@ -47,20 +47,23 @@
         <li>Expose a web portal for displaying collected data about notarial offices, translators and interpreters;</li>
         <li>The user can contribute to the data gathering by providing one or more of the following:
           <ul>
-            <li>a review of an entity;</li>
-            <li>the location of an entity, if missing;</li>
-            <li>rates and services provided by an entity, if missing.</li>
-          </ul>
-        </li>
-        <li>A review contains:
-          <ul>
-            <li>reviewed entity data;</li>
-            <li>score;</li>
-            <li>title, optional;</li>
-            <li>description, optional.</li>
+            <li>a review of an office entity;</li>
+            <li>the location of an office entity, if missing;</li>
+            <li>rates and services provided by an office entity, if missing;</li>
+            <li>timetable of an office entity, if missing;</li>
+            <li>contact information for an office entity, if missing.</li>
           </ul>
         </li>
       </ul>
+      
+      <p>A review contains:
+        <ul>
+          <li>reviewed entity data;</li>
+          <li>score;</li>
+          <li>title, optional;</li>
+          <li>description, optional.</li>
+        </ul>
+      </p>
 
       <!-- TODO: technical specifications (very general: deployed on cloud, independent services, persistent storage, external data sources (gov.data/data.gov), yada yada) -->
 
@@ -275,25 +278,40 @@
 
       <p>This entity refers to individual services that an Office might perform (e.g. mandarin translation, ancient text interpretation, real estate purchase mediation, etc.).</p>
 
-      <h4>Missing data</h4>
+    </section>
 
-      <p>The main problem that was encountered when compiling the entities, except the user entity, was missing data. The application's primary data source (<code>data.gov</code>) does not expose all of the information that would be needed for a complete representation of the entities in the UI.</p>
+    <section>
+      
+      <h3>Preliminary Difficulties: Missing Data on data.gov</h3>
+
+      <p>This section describes one of the difficulties that was encountered when designing the application and the approach taken to solve it. The problem is that of missing data.</p>
+
+      <p>The application's primary data source (<code>data.gov</code>) does not expose all of the information that would be needed for a complete representation of the entities in the UI.</p>
+      <p>
+        The available data is missing crucial information as well, such as location in the case of translator-interpreter offices, and provided services in case of notarial offices.
+        There is also no trace of reviews, rates, specializations, vicinity between offices, maps, timetables or full contact information. Fortunately, Red Tape Reviewer tries to solve this exact problem.
+        The goal for Red Tape Reviewer is serving as a public data store, continuously collecting information from its users, on behalf of its users. Users can contribute to the collected data by specifying certain information
+        about one or more entities, such as: contact information, timetables, reviews, location, and other types of information that is related to one entity.
+      </p>
+
+      <p>Such an approach is similar to that taken by the <a href="https://en.wikipedia.org/wiki/Main_Page" target="_blank">Wikipedia, The Free Encyclopedia website</a>.</p>
 
       <p style="color: red;">TODO: talk about what data is missing from the data source and it was addressed (users fill in the data)</p>
-
-      <h4>Data location</h4>
-
-      <p style="color: red;">TODO: dynamodb i guess, detail a bit about where these entities are kept</p>
-
+      
     </section>
 
     <section>
       <h3>Linked Data Principles Adherence</h3>
 
+      <h4>Use URIs as names of things</h4>
+      <h4>Use HTTP URIs so that people can look up those names</h4>
+      <h4>When someone looks up a URI, provide useful information, using the standards (RDF*, SPARQL)</h4>
+      <h4>Include links to other URIs. so that they can discover more things.</h4>
+
       <p style="color: red;">TODO: how this app adheres to each one of the linked data principles</p>
 
     </section>
-    <!-- TODO: data layer (how many tables) -->
+    <!-- TODO: data layer (how many tables), location and so on -->
     <!-- TODO: available APIs, links to OpenAPI spec -->
     <!-- TODO: linked data principles adherence -->
   </article>
