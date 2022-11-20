@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Red Tape Reviewer</title>
+</head>
+<body>
+  <article>
+    <h1>Red Tape Reviewer</h1>
+    
+    <section>
+      <h2>Problem statement</h2>
+
+      <p>
+        Data available online related to notarial offices, and translators and interpreters, is lackluster. An individual might expect to find a web application, or otherwise, that centralizes available data about the two respective entities.
+        Data such as:
+          <ul>
+            <li>reviews;</li>
+            <li>rates;</li>
+            <li>provided services;</li>
+            <li>location;</li>
+            <li>contact details;</li>
+          </ul>
+        Ideally, the application will build on top of its existent data sources by incorporating into them data provided by its users. The first type of data that one might arrive at, and that is of great interest to today's internet user,
+        is represented by reviews. In the current case, reviews of notarial offices, translators and interpreters.
+      </p>
+
+      <p>
+        Such an application does not currently exist in the Romanian internet.
+      </p>
+
+      <p>
+        Red Tape Reviewer is an attempt to solve the presented issues. The main purpose of the application is centralization of existent publicly available data, and data obtained during the lifespan of the application (e.g. reviews from the 
+        app's users), and sharing all of it through a web portal.
+      </p>
+    </section>
+
+    <section>
+      <h2>Functional and Technical Specifications (Pre-Implementation)</h2>
+
+      <h3>Functional Specifications</h3>
+
+      <ul>
+        <li>Individuals can create an account;</li>
+        <li>Expose a web portal for displaying collected data about notarial offices, translators and interpreters;</li>
+        <li>The user can contribute to the data gathering by providing one or more of the following:
+          <ul>
+            <li>a review of an entity;</li>
+            <li>the location of an entity, if missing;</li>
+            <li>rates and services provided by an entity, if missing.</li>
+          </ul>
+        </li>
+        <li>A review contains:
+          <ul>
+            <li>reviewed entity data;</li>
+            <li>score;</li>
+            <li>title, optional;</li>
+            <li>description, optional.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- TODO: technical specifications (very general: deployed on cloud, independent services, persistent storage, external data sources (gov.data/data.gov), yada yada) -->
+
+      <h3>Technical Specifications</h3>
+
+      <ul>
+        <li>Application's UI is written in React and deployed through the means of a static resources hosting service provided by a cloud vendor;</li>
+        <li>Application's backend is represented by a series of independent services deployed in different containers on a single server, or on multiple servers altogether;</li>
+        <li>Data is persisted NonSQL database provided by a cloud services vendor.</li>
+      </ul>
+
+    </section>
+
+    <!-- TODO: architecture, add architecture picture here (sub-chapters: UI, all the services, external APIs, data layer ) -->
+    <section>
+      <h2>Architecture</h2>
+
+      <p>The application architecture's is based on SOA. There exists a collection of independent services that perform the application's business logic. All layers of the application (UI, business logic, and data) are deployed or hosted through the means of AWS cloud vendor:</p>
+      <ul>
+        <li>the UI is hosted on the S3 service;</li>
+        <li>the services are deployed through the EC2 service;</li>
+        <li>the data is persisted through the DynamoDB service.</li>
+      </ul>
+
+      <h3>Flow</h3>
+
+      <p>The application's flow is simple:</p>
+
+      <ol>
+        <li>user logs in or creates an account;</li>
+        <li>once logged in, the user can search for entities;</li>
+        <li>once logged in, the user can submit a review for an entity.</li>
+      </ol>
+
+      <img src="./flow.jpg" />
+
+      <h3>UI Layer</h3>
+
+      <p>The client-side layer of the application is written in React. React-Router is used for the implementation of routing inside of the client.</p>
+
+      <h4>Components</h4>
+
+      <p>There are 3 pages that compose the application:</p>
+
+      <ul>
+        <li><code>/authentication</code> handles account creation and accessing the application;</li>
+        <li><code>/index</code> is the homepage. Exposes notaries, translators and interpreters entities, along with a filtering mechanism;</li>
+        <li><code>/entity/[entity-id]</code> is the page that can be navigated to from inside of <code>/index</code>. It represents a detailed view of the entity with id <code>[entity-id]</code>. Here, the user can add and read reviews, and locate detailed information about the entity's provided services in question, and see contact information for the entity.</li>
+      </ul>
+
+      <p style="color: red;">TODO: add images with mockup</p>
+
+      <h4>Interaction with the backend services</h4>
+
+      <p>In the case of backend APIs integration, the desired effect is decoupling. To achieve this, the UI is limited to interacting with one single service: API Gateway Service. The service will pre-process, map or modify the data in any way it is necessary for modeling it such that it matches the interface that the frontend expects.</p>
+    
+      <h3>Backend Services</h3>
+
+      <p>The Backend of the application is split into 5 main services, described in the following diagram:</p>
+
+      <img src="./backend-now.jpg" />
+
+      <h4>API Gateway Service</h4>
+
+      <p>The purpose of this service is acting as a gateway between the UI and the other services. The functionalities of this service are:</p>
+
+      <ul>
+        <li>intercept all requests from the UI;</li>
+        <li>pass requests to Model and User services and transform the data such that it is in accordance with the expected interface on the UI side;</li>
+        <li>handle particularities related to browser-based client to server communication (e.g. Cross-Origin Resource Sharing, Cross-Site Request Forgery protection). This particular functionality will ensure that the other services are not to be configured to support request-handling for a browser-based client. This will simplify the amount of configuration that needs to be done. Additionally,the DRY principle is respected.</li>
+      </ul>
+
+      <p style="color: red;">TODO: maybe add a visual architectural representation of the API gateway service caught between the client and the other services</p>
+
+      <h4>User Service</h4>
+
+      <p>All functionalities related to account creation, account management and log-in.</p>
+
+      <p>In the same domain as this service, basic authentication will be implemented.</p>
+
+      <h4>Model Service</h4>
+
+      <p>This service exposes the API for creating, reading, updating and deleting entities (notaries, translators and interpreters). Because of this, it is the service that interacts most with the data layer.</p>
+
+      <p>For reading (accessing) the entities from the database, the Model service exposes two endpoints: <code>/entities</code> and <code>/search</code>.</p>
+      <p>The first, <code>/entities</code>, is meant for reading all of the entities, regardless of any attributes that they might have, with a basic pagination functionality such that not all entities need to be queried  at the same time.</p>
+      <p>The second, <code>/search</code>, exposes an API for searching for entities based on a number of criteria:</p>
+      <ul>
+        <li>number of reviews;</li>
+        <li>rating;</li>
+        <li>name;</li>
+        <li>location;</li>
+        <li>provided services;</li>
+        <li>tariffs.</li>
+      </ul>
+
+      <p>The service also exposes an endpoint for updating entities. The purpose of the endpoint is registering updates from users regarding a certain entity:</p>
+      <ul>
+        <li>reviews;</li>
+        <li>location;</li>
+        <li>rates and services.</li>
+      </ul>
+
+      <h4>Poller Service</h4>
+
+      <p>Because the application is reliant on the government data available to the public regarding notaries, translators and interpreters, there must exist a way for the application to query the data source at regular intervals and to update its data layer with new information, if present. This need is filled by the Poller service.</p>
+      <p>The service's purpose is polling the APIs exposed at <code>https://data.gov.ro/api/3/action/package_show/[dataset-id]</code> and, if the data is different from the last time the endpoint was queried, update the data layer to reflect the change. In this way, Red Tape Reviewer's users will always have access to the latest official data.</p>
+
+      <p>The service implements an additional functionality: csv files parsing. The service will download and parse the files and fill the data layer accordingly. On each data update, the prior files will be deleted and replaced with the newly downloaded files.</p>
+    </section>
+
+    <!-- TODO: entities and entities descriptions -->
+    <section>
+
+      <h3>Entities</h3>
+
+      <p>This section will describe all of the entities and sub-entities present in the application (user, notarial office, translator-interpreter office, review, service).</p>
+
+      <h4>User</h4>
+
+      <code>
+        User {
+          id: string
+          email: string
+          password: string
+          username: password
+        }
+      </code>
+
+      <p>Describing individuals that can create accounts, and contribute to the store of information with new data about the other two entities and reviews.</p>
+
+      <p>This entity is managed by the User service, and a new instance of it is created for each account.</p>
+
+      <p>The user's reviews are identified by a <code>submitterId</code> field on each Review entity.</p>
+
+      <h4>Office: notarial or translator-interpreter</h4>
+
+      <code>
+        <p>Office {<p>
+          <p style="margin-left: 16px">id: string</p>
+          <p style="margin-left: 16px">averageRating: double</p>
+          <p style="margin-left: 16px">reviews: Review[]</p>
+          <p style="margin-left: 16px">name: string</p>
+          <p style="margin-left: 16px">location: {</p>
+            <p style="margin-left: 32px">city: string</p>
+            <p style="margin-left: 32px">address: string</p>
+          <p style="margin-left: 16px">}</p>
+          <p style="margin-left: 16px">contact: {</p>
+            <p style="margin-left: 32px">phoneNumber: string[]</p>
+            <p style="margin-left: 32px">emailAddress: string[]</p>
+          <p style="margin-left: 16px">}</p>
+          <p style="margin-left: 16px">neighbors: string[]</p>
+          <p style="margin-left: 16px">type: string</p>
+          <p style="margin-left: 16px">services: Service[]</p>
+          <p style="margin-left: 16px">timetable: {</p>
+            <p style="margin-left: 32px">string: int[2]</p>
+          <p style="margin-left: 16px">}[]</p>
+        <p>}</p>
+      </code>
+
+      <p>The purpose of each field of the Office entity can be explained as follows:
+        <ul>
+          <li><code>averageRating</code> - the grade of this entity, calculated as an average of the <code>rating</code> field of every Review associated to this office;</li>
+          <li><code>reviews</code> - an array of reviews addressed to this office;</li>
+          <li><code>name</code> - a non-unique identifier;</li>
+          <li><code>location</code> - dictionary of fields describing the geographical location of this office;</li>
+          <li><code>contact</code> - data regarding the contact channels for this particular office;</li>
+          <li><code>neighbors</code> - a list of ids of other offices in the geographical vicinity of this office;</li>
+          <li><code>type</code> - represents the type of office, which can be: <code>notarial</code> for a notarial office, or <code>translator-interpreter</code> for a translator-interpreter office;</li>
+          <li><code>services</code> - a list of the services that the office provides;</li>
+          <li><code>timetable</code> - a list with all of the days of the week and their respective working hours interval for this office.</li>
+        </ul>
+      </p>
+
+      <h4>Sub-entities</h4>
+
+      <p>The following are entities that are not returned directly by any backend service. Instead, they help reason about the primary elements of an Office entity (reviews and services).</p>
+
+      <h5>Review</h5>
+
+      <code>
+        Review {
+          rating: int
+          title: string
+          description: string
+          submitterId: string
+          entityId: string
+        }
+      </code>
+
+      <p>The following describes the purpose of each field:
+        <ul>
+          <li><code>rating</code> - the grade that a user has specified for this review, from 1 to 5;</li>
+          <li><code>title</code> - the title of the review;</li>
+          <li><code>description</code> - further comments in this review, optional field;</li>
+          <li><code>submitterId</code> - represents the <code>id</code> field of the User entity that created the review;</li>
+          <li><code>entityId</code> - represents the <code>id</code> field of the NotarialOffice or TranslatorInterpreterOffice entity for which the review is for.</li>
+        </ul>
+      </p>
+
+      <p>The Review entity is not directly returned by any of the backend services. Instead, the purpose of all of the Review entities is being stored together with NotarialOffice and TranslatorInterpreterOffice entities to which they belong to.</p>
+
+      <h5>Service</h5>
+
+      <code>
+        Service {
+          title: string
+          description: string
+          rate: double
+        }
+      </code>
+
+      <p>This entity refers to individual services that an Office might perform (e.g. mandarin translation, ancient text interpretation, real estate purchase mediation, etc.).</p>
+
+      <h4>Missing data</h4>
+
+      <p>The main problem that was encountered when compiling the entities, except the user entity, was missing data. The application's primary data source (<code>data.gov</code>) does not expose all of the information that would be needed for a complete representation of the entities in the UI.</p>
+
+      <p style="color: red;">TODO: talk about what data is missing from the data source and it was addressed (users fill in the data)</p>
+
+      <h4>Data location</h4>
+
+      <p style="color: red;">TODO: dynamodb i guess, detail a bit about where these entities are kept</p>
+
+    </section>
+
+    <!-- TODO: data layer (how many tables) -->
+    <!-- TODO: available APIs, links to OpenAPI spec -->
+    <!-- TODO: linked data principles adherence -->
+  </article>
+</body>
+</html>
