@@ -65,8 +65,6 @@
         </ul>
       </p>
 
-      <!-- TODO: technical specifications (very general: deployed on cloud, independent services, persistent storage, external data sources (gov.data/data.gov), yada yada) -->
-
       <h3>Technical Specifications</h3>
 
       <ul>
@@ -77,7 +75,6 @@
 
     </section>
 
-    <!-- TODO: architecture, add architecture picture here (sub-chapters: UI, all the services, external APIs, data layer ) -->
     <section>
       <h2>Architecture</h2>
 
@@ -114,8 +111,6 @@
         <li><code>/entity/[entity-id]</code> is the page that can be navigated to from inside of <code>/index</code>. It represents a detailed view of the entity with id <code>[entity-id]</code>. Here, the user can add and read reviews, and locate detailed information about the entity's provided services in question, and see contact information for the entity.</li>
       </ul>
 
-      <p style="color: red;">TODO: add images with mockup</p>
-
       <h4>Interaction with the backend services</h4>
 
       <p>In the case of backend APIs integration, the desired effect is decoupling. To achieve this, the UI is limited to interacting with one single service: API Gateway Service. The service will pre-process, map or modify the data in any way it is necessary for modeling it such that it matches the interface that the frontend expects.</p>
@@ -136,7 +131,7 @@
         <li>handle particularities related to browser-based client to server communication (e.g. Cross-Origin Resource Sharing, Cross-Site Request Forgery protection). This particular functionality will ensure that the other services are not to be configured to support request-handling for a browser-based client. This will simplify the amount of configuration that needs to be done. Additionally,the DRY principle is respected.</li>
       </ul>
 
-      <p style="color: red;">TODO: maybe add a visual architectural representation of the API gateway service caught between the client and the other services</p>
+      <!-- TODO: maybe add a visual architectural representation of the API gateway service caught between the client and the other services-->
 
       <h4>User Service</h4>
 
@@ -175,7 +170,6 @@
       <p>The service implements an additional functionality: csv files parsing. The service will download and parse the files and fill the data layer accordingly. On each data update, the prior files will be deleted and replaced with the newly downloaded files.</p>
     </section>
 
-    <!-- TODO: entities and entities descriptions -->
     <section>
 
       <h3>Entities</h3>
@@ -190,6 +184,7 @@
           email: string
           password: string
           username: password
+          reviews: Review[]
         }
       </code>
 
@@ -197,7 +192,7 @@
 
       <p>This entity is managed by the User service, and a new instance of it is created for each account.</p>
 
-      <p>The user's reviews are identified by a <code>submitterId</code> field on each Review entity.</p>
+      <p>The user's reviews are identified by the <code>reviews</code> field.</p>
 
       <h4>Office: notarial or translator-interpreter</h4>
 
@@ -231,7 +226,7 @@
           <li><code>name</code> - a non-unique identifier;</li>
           <li><code>location</code> - dictionary of fields describing the geographical location of this office;</li>
           <li><code>contact</code> - data regarding the contact channels for this particular office;</li>
-          <li><code>neighbors</code> - a list of ids of other offices in the geographical vicinity of this office;</li>
+          <li><code>neighbors</code> - a list of URIs of other offices in the geographical vicinity of this office;</li>
           <li><code>type</code> - represents the type of office, which can be: <code>notarial</code> for a notarial office, or <code>translator-interpreter</code> for a translator-interpreter office;</li>
           <li><code>services</code> - a list of the services that the office provides;</li>
           <li><code>timetable</code> - a list with all of the days of the week and their respective working hours interval for this office.</li>
@@ -296,19 +291,22 @@
 
       <p>Such an approach is similar to that taken by the <a href="https://en.wikipedia.org/wiki/Main_Page" target="_blank">Wikipedia, The Free Encyclopedia website</a>.</p>
 
-      <p style="color: red;">TODO: talk about what data is missing from the data source and it was addressed (users fill in the data)</p>
-      
     </section>
 
     <section>
       <h3>Linked Data Principles Adherence</h3>
 
-      <h4>Use URIs as names of things</h4>
-      <h4>Use HTTP URIs so that people can look up those names</h4>
-      <h4>When someone looks up a URI, provide useful information, using the standards (RDF*, SPARQL)</h4>
-      <h4>Include links to other URIs. so that they can discover more things.</h4>
+      <p>All entities in the application will be exposed through a URI such as: <code>http://red-tape-reviewer.com/[entity-type]/[entity-id]</code>, where <code>[entity-type]</code> can be user, office, etc., and <code>[entity-id]</code> represents the unique identifier of the searched entity. 
+      This pattern of URI representation is used in the application's APIs and is inspired by object-based navigation.</p>
 
-      <p style="color: red;">TODO: how this app adheres to each one of the linked data principles</p>
+      <p>The used protocol for the application's APIs is HTTP.</p>
+
+      <p>The payload between the API Gateway Service and the client will conform to the JSON format. For communication between business modules, the sent payloads will be under the format of RDF*. 
+      This approach was chosen, particularly JSON formatting for backend-client payloads, to leverage existing capabilities of JavaScript (which the client-side application is written in) in parsing JSON in the browser.</p>
+      
+      <p>Similar to RESTful APIs' HATEOAS, each HTTP payload related to an entity will hold URIs to related entities.</p>
+
+      <p>In Red Tape Reviewer, the principle manifests itself as in the following example: an office entity holds a <code>neighbors</code> field, that keeps references to geographically close entities of the same type (e.g. notarial offices);</p>
 
     </section>
     <!-- TODO: data layer (how many tables), location and so on -->
