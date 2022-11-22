@@ -7,8 +7,8 @@
   <title>Red Tape Reviewer</title>
 </head>
 <body>
-  <article>
-    <h1>Red Tape Reviewer</h1>
+  <article typeof="schema:ScholarlyArticle" resource="#">
+    <h1 property="schema:name">Red Tape Reviewer</h1>
     
     <section>
       <h2>Problem statement</h2>
@@ -32,7 +32,7 @@
       </p>
 
       <p>
-        Red Tape Reviewer is an attempt to solve the presented issues. The main purpose of the application is centralization of existent publicly available data (using the data stored on <a href="https://data.gov.ro/dataset" target="_blank">data.gov</a> website), and data obtained during the lifespan of the application (e.g. reviews from the 
+        Red Tape Reviewer is an attempt to solve the presented issues. The main purpose of the application is centralization of existent publicly available data (using the data stored on <a href="https://data.gov.ro/dataset" target="_blank"><span property="schema:url">data.gov</span></a> website), and data obtained during the lifespan of the application (e.g. reviews from the 
         app's users), and sharing all of it through a web portal.
       </p>
     </section>
@@ -95,7 +95,10 @@
         <li>once logged in, the user can submit a review for an entity.</li>
       </ol>
 
-      <img src="./flow.jpg" />
+      <figure typeof="sa:image">
+        <img src="./flow.jpg" />
+        <figcaption>Fig 1.0. Application Flow Chart</figcaption>
+      </figure>
 
       <h3>UI Layer</h3>
 
@@ -119,7 +122,10 @@
 
       <p>The Backend of the application is split into 5 main services, described in the following diagram:</p>
 
-      <img src="./backend-now.jpg" />
+      <figure typeof="sa:image">
+        <img src="./backend-now.jpg" />
+        <figcaption>Fig 1.1. Backend Structure</figcaption>
+      </figure>
 
       <h4>API Gateway Service</h4>
 
@@ -289,7 +295,7 @@
         about one or more entities, such as: contact information, timetables, reviews, location, and other types of information that is related to one entity.
       </p>
 
-      <p>Such an approach is similar to that taken by the <a href="https://en.wikipedia.org/wiki/Main_Page" target="_blank">Wikipedia, The Free Encyclopedia website</a>.</p>
+      <p>Such an approach is similar to that taken by the <span property="schema:Organization"><a href="https://en.wikipedia.org/wiki/Main_Page" target="_blank"><span property="schema:name">Wikipedia, The Free Encyclopedia</span> website</a></span>.</p>
 
     </section>
 
@@ -309,9 +315,87 @@
       <p>In Red Tape Reviewer, the principle manifests itself as in the following example: an office entity holds a <code>neighbors</code> field, that keeps references to geographically close entities of the same type (e.g. notarial offices);</p>
 
     </section>
+    <!-- TODO: format it as a scholarly HTML article -->
     <!-- TODO: data layer (how many tables), location and so on -->
     <!-- TODO: available APIs, links to OpenAPI spec -->
     <!-- TODO: linked data principles adherence -->
+
+    <section>
+      <h3>References</h3>
+
+      <ul>
+        <li typeof="schema:WebPage" role="doc-biblioentry" resource="https://profs.info.uaic.ro/~busaco/teach/courses/wade/web-film.html/" property="schema:citation">
+          <cite property="schema:name">
+            <a href="https://profs.info.uaic.ro/~busaco/teach/courses/wade/web-film.html">WADe Web Film</a>
+          </cite>,
+            by <span property="schema:author" typeof="schema:Person">
+            <span property="schema:givenName">Sabin</span>
+            <span property="schema:additionalName">Corneliu</span>
+            <span property="schema:familyName">Buraga</span>
+          </span>
+          <span property="schema:potentialAction" typeof="schema:ReadAction">
+            <meta property="schema:actionStatus" content="CompletedActionStatus">
+              (accessed on
+            <time property="schema:endTime" datatype="xsd:date"
+              datetime="2022-11-01">01 Nov 2022</time>);
+          </span>
+        </li>
+        <li typeof="schema:WebPage" role="doc-biblioentry" resource="https://schema.org/" property="schema:citation">
+          <cite property="schema:name">
+            <a href="https://schema.org/">Schema.org</a>
+          </cite>
+          <span property="schema:potentialAction" typeof="schema:ReadAction">
+            <meta property="schema:actionStatus" content="CompletedActionStatus">
+              (accessed on
+            <time property="schema:endTime" datatype="xsd:date"
+              datetime="2022-11-03">03 Nov 2022</time>);
+          </span>
+        </li>
+        <li typeof="schema:WebPage" role="doc-biblioentry" resource="https://developer.mozilla.org/en-US/" property="schema:citation">
+          <cite property="schema:name">
+            <a href="https://developer.mozilla.org/en-US/">MDN Web Docs</a>
+          </cite>
+          <span property="schema:potentialAction" typeof="schema:ReadAction">
+            <meta property="schema:actionStatus" content="CompletedActionStatus">
+              (accessed on
+            <time property="schema:endTime" datatype="xsd:date"
+              datetime="2022-11-01">01 Nov 2022</time>);
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <section typeof="sa:AuthorsList">
+      <h3>Authors</h3>
+      <ul>
+        <li typeof="sa:ContributorRole" property="schema:author">
+          <span typeof="schema:Person" resource="https://github.com/Anghel-Lucian">
+            <meta property="schema:givenName" content="Paul">
+            <meta property="schema:additionalName" content="Lucian">
+            <meta property="schema:familyName" content="Anghel">
+            <span property="schema:name">Paul L. Anghel</span>
+          </span>
+          <ul>
+            <li typeof="schema:ContactPoint" property="schema:roleContactPoint" >
+              <a href="mailto:anghelpaul99@gmail.com" property="schema:email">anghelpaul99@gmail.com</a>
+            </li>
+          </ul>
+        </li>
+        <li typeof="sa:ContributorRole" property="schema:author">
+          <span typeof="schema:Person" resource="https://github.com/HOOOD1N1">
+            <meta property="schema:givenName" content="Eduard">
+            <meta property="schema:additionalName" content="Cristian">
+            <meta property="schema:familyName" content="Drob">
+            <span property="schema:name">Eduard C. Drob</span>
+          </span>
+          <ul>
+            <li typeof="schema:ContactPoint" property="schema:roleContactPoint" >
+              <a href="mailto:drobeduard@gmail.com" property="schema:email">drobeduard@gmail.com</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </section>
   </article>
 </body>
 </html>
