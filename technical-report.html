@@ -216,13 +216,15 @@
           <p style="margin-left: 16px">name: string</p>
           <p style="margin-left: 16px">location: {</p>
             <p style="margin-left: 32px">city: string</p>
-            <p style="margin-left: 32px">address: string</p>
+            <p style="margin-left: 32px">county: string</p>
+            <p style="margin-left: 32px">streetName: string</p>
+            <p style="margin-left: 32px">streetNumber: string</p>
+            <p style="margin-left: 32px">floor: string</p>
           <p style="margin-left: 16px">}</p>
           <p style="margin-left: 16px">contact: {</p>
             <p style="margin-left: 32px">phoneNumber: string[]</p>
             <p style="margin-left: 32px">emailAddress: string[]</p>
           <p style="margin-left: 16px">}</p>
-          <p style="margin-left: 16px">neighbors: string[]</p>
           <p style="margin-left: 16px">type: string</p>
           <p style="margin-left: 16px">services: Service[]</p>
           <p style="margin-left: 16px">timetable: {</p>
@@ -238,7 +240,6 @@
           <li><code>name</code> - a non-unique identifier;</li>
           <li><code>location</code> - dictionary of fields describing the geographical location of this office;</li>
           <li><code>contact</code> - data regarding the contact channels for this particular office;</li>
-          <li><code>neighbors</code> - a list of URIs of other offices in the geographical vicinity of this office;</li>
           <li><code>type</code> - represents the type of office, which can be: <code>notarial</code> for a notarial office, or <code>translator-interpreter</code> for a translator-interpreter office;</li>
           <li><code>services</code> - a list of the services that the office provides;</li>
           <li><code>timetable</code> - a list with all of the days of the week and their respective working hours interval for this office.</li>
@@ -253,11 +254,11 @@
 
       <code>
         Review {
+          id: string
           rating: int
           title: string
-          description: string
-          submitterId: string
-          entityId: string
+          comment: string
+          userId: string
         }
       </code>
 
@@ -265,9 +266,8 @@
         <ul>
           <li><code>rating</code> - the grade that a user has specified for this review, from 1 to 5;</li>
           <li><code>title</code> - the title of the review;</li>
-          <li><code>description</code> - further comments in this review, optional field;</li>
-          <li><code>submitterId</code> - represents the <code>id</code> field of the User entity that created the review;</li>
-          <li><code>entityId</code> - represents the <code>id</code> field of the NotarialOffice or TranslatorInterpreterOffice entity for which the review is for.</li>
+          <li><code>comment</code> - further comments in this review, optional field;</li>
+          <li><code>userId</code> - represents the <code>id</code> field of the User entity that created the review;</li>
         </ul>
       </p>
 
@@ -277,9 +277,10 @@
 
       <code>
         Service {
+          id: string
           title: string
-          description: string
-          rate: double
+          descriptionOfService: string
+          price: double
         }
       </code>
 
