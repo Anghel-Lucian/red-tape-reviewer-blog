@@ -1,0 +1,416 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "USER SERVICE API",
+    "description": "An API that allows the user to create an account, to login and to get a user account",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://dev-server.com",
+      "description": "dev server"
+    }
+  ],
+  "paths": {
+    "/create-account": {
+      "post": {
+        "description": "Passing a username and a password will create a new user account",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of the new account",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "example": "myUsernameIsGreat"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of the new account",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "example": "(!@asdsaf123)"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The creation of the user account was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The creation of the user account was not successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "description": "Check if the given username and password are valid",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of the account",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "example": "myUsernameIsGreat"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of the account",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "example": "(!@asdsaf123)"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The username and password are valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_1"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The username and password are not valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_500_1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "description": "Logout the user with the given username",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of the account",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "example": "myUsernameIsGreat"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user has been logged out",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_2"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The user is not logged in or the username doesn't exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "There is a server error. Please check again later",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_500_2"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{userId}": {
+      "get": {
+        "description": "Get the user by id",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Numeric ID of the user to get",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The information about the user has been returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_3"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The user id is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_404_1"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "There is an issue with the server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_500_3"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "description": "Get all users",
+        "responses": {
+          "200": {
+            "description": "Returns all the users",
+            "content": {
+              "plain/text": {
+                "schema": {
+                  "type": "array",
+                  "example": [
+                    {
+                      "id": 1,
+                      "username": "JohnAmGreat"
+                    },
+                    {
+                      "id": 2,
+                      "username": "jackOfAllTrades"
+                    }
+                  ],
+                  "items": {
+                    "$ref": "#/components/schemas/inline_response_200_4"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The user id is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_404_1"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "There is an issue with the server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_500_3"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "inline_response_200": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "true/false"
+          },
+          "message": {
+            "type": "string",
+            "description": "The creation of the user account was successful",
+            "example": "The creation of the user account was successful"
+          }
+        }
+      },
+      "inline_response_500": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "true/false",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "description": "The creation of the user account was not successful",
+            "example": "The creation of the user account was not successful"
+          }
+        }
+      },
+      "inline_response_200_1": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "true/false"
+          },
+          "message": {
+            "type": "string",
+            "description": "The username and password are valid",
+            "example": "The username and password are valid"
+          }
+        }
+      },
+      "inline_response_500_1": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "true/false",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "description": "The username and password are not valid",
+            "example": "The username and password are not valid"
+          }
+        }
+      },
+      "inline_response_200_2": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "true/false"
+          },
+          "message": {
+            "type": "string",
+            "description": "The user has been logged out",
+            "example": "The user has been logged out"
+          }
+        }
+      },
+      "inline_response_404": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "true/false",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "description": "The user is not logged in or the username doesn't exist",
+            "example": "The user is not logged in or the username doesn't exist"
+          }
+        }
+      },
+      "inline_response_500_2": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "true/false",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "description": "There is a server error. Please check again later",
+            "example": "There is a server error. Please check again later"
+          }
+        }
+      },
+      "inline_response_200_3": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "JohnAmGreat"
+          }
+        }
+      },
+      "inline_response_404_1": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Invalid user id"
+          }
+        }
+      },
+      "inline_response_500_3": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "This is the error"
+          }
+        }
+      },
+      "inline_response_200_4": {
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

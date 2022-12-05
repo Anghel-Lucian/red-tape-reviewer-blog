@@ -1,0 +1,460 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Offices API",
+    "description": "API that handles all requests pertaining information about offices, for both notaries and interpretors ",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "paths": {
+    "/office": {
+      "post": {
+        "description": "Add a new office object to the database",
+        "parameters": [
+          {
+            "name": "office",
+            "in": "query",
+            "description": "The new office object",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Office"
+              }
+            },
+            "example": {
+              "id": 1,
+              "averageRating": 2.3,
+              "name": "Ol'Johny Office",
+              "county": "Iasi",
+              "city": "Iasi",
+              "streetName": "Elena Doamna",
+              "streetNumber": "1A",
+              "floor": 1,
+              "phoneNumber": 127182419,
+              "emailAddress": "a@gmail.com",
+              "reviews": [
+                {
+                  "id": 1,
+                  "rating": 3,
+                  "title": "No way",
+                  "comment": "Best office ever",
+                  "userId": 2
+                },
+                {
+                  "id": 2,
+                  "rating": 1,
+                  "title": "Worst ever",
+                  "comment": "Worst office ever",
+                  "userId": 2
+                }
+              ],
+              "services": [
+                {
+                  "id": 1,
+                  "title": "Service1",
+                  "descriptionOfService": "Mandarin Translation Service",
+                  "price": 100
+                },
+                {
+                  "id": 2,
+                  "title": "Service2",
+                  "descriptionOfService": "Ancient Text Translation Service",
+                  "userId": 150
+                }
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The new office object has been added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "There is an issue with the server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/office/{officeId}": {
+      "get": {
+        "description": "Get the office by id",
+        "parameters": [
+          {
+            "name": "officeId",
+            "in": "path",
+            "description": "Numeric ID of the office to get",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The information about the office has been returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_1"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The office id is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "There is an issue with the server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_500_1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "parameters": [
+          {
+            "name": "officeId",
+            "in": "path",
+            "description": "Numeric ID of the office to get",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "office",
+            "in": "query",
+            "description": "The new office object to replace the old one",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Office"
+              }
+            },
+            "example": {
+              "id": 1,
+              "averageRating": 2.3,
+              "name": "Ol'Johny Office",
+              "county": "Iasi",
+              "city": "Iasi",
+              "streetName": "Elena Doamna",
+              "streetNumber": "1A",
+              "floor": 1,
+              "phoneNumber": 127182419,
+              "emailAddress": "a@gmail.com",
+              "reviews": [
+                {
+                  "id": 1,
+                  "rating": 3,
+                  "title": "No way",
+                  "comment": "Best office ever",
+                  "userId": 2
+                },
+                {
+                  "id": 2,
+                  "rating": 1,
+                  "title": "Worst ever",
+                  "comment": "Worst office ever",
+                  "userId": 2
+                }
+              ],
+              "services": [
+                {
+                  "id": 1,
+                  "title": "Service1",
+                  "descriptionOfService": "Mandarin Translation Service",
+                  "price": 150
+                },
+                {
+                  "id": 2,
+                  "title": "Service2",
+                  "descriptionOfService": "Ancient Text Translation Service",
+                  "userId": 200
+                }
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The information about the office has been updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_2"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The office id is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "There is an issue with the server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_500_1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/offices": {
+      "get": {
+        "description": "Get all offices",
+        "responses": {
+          "200": {
+            "description": "Returns all the offices",
+            "content": {
+              "plain/text": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Office"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "There are no offices available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_404_1"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "There is an issue with the server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_500_1"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Office": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "averageRating": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "county": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "streetName": {
+            "type": "string"
+          },
+          "streetNumber": {
+            "type": "string"
+          },
+          "floor": {
+            "type": "number"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "emailAddress": {
+            "type": "string"
+          },
+          "reviews": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Review"
+            }
+          },
+          "services": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Service"
+            }
+          }
+        },
+        "description": "Model containing office information"
+      },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "rating": {
+            "maximum": 5,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "integer"
+          }
+        },
+        "description": "Model containing review information. It contains rating - the grade that a user has specified for this review,from 1 to 5, title - the title of the review, comment - further comments in this review, optional field, userId - represents the id field of the User entity that created the review"
+      },
+      "Service": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "descriptionOfService": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          }
+        },
+        "description": "Model containing service information. This entity refers to individual services that an Office might perform (e.g. mandarin translation, ancient text interpretation, real estate purchase mediation, etc.)."
+      },
+      "inline_response_200": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "true/false"
+          },
+          "message": {
+            "type": "string",
+            "description": "The new office object has been added",
+            "example": "The new office object has been added"
+          }
+        }
+      },
+      "inline_response_500": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "true/false",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "description": "The new office object has not been added",
+            "example": "The new office object has not been added"
+          }
+        }
+      },
+      "inline_response_200_1": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Ol' John Office"
+          }
+        }
+      },
+      "inline_response_404": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Invalid office id"
+          }
+        }
+      },
+      "inline_response_500_1": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "This is the error"
+          }
+        }
+      },
+      "inline_response_200_2": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "The office data has been updated"
+          }
+        }
+      },
+      "inline_response_404_1": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "No offices found"
+          }
+        }
+      }
+    }
+  }
+}
