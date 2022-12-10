@@ -400,5 +400,38 @@
       </ul>
     </section>
   </article>
+
+  <!-- TODO: 
+    talk about difficulties with the polling service: WCU limitations and cost, need of throttling for keeping WCUs under some amount a second (currently 5) so we don't get billed a lot and because we had only provisioning of 1 WCU per second when we first created the table, massive oversight that lead to a lot of scary errors in the AWS console
+
+
+
+
+
+    how to identify stale items? As of now I do not know. If we don't get rid of stale items, we add a lot of garbage data to the app. If we do get rid of stale items, how do we do it? 
+    We would need to consume a lot of RCUs for verifying each item, and then additional WCUs to delete the stale items, I ain't got the cash... 
+    POSSIBLE ANSWER: the conclusion that I arrived at was that we can create a hash that takes as inputs the fields in the excel from data.gov 
+    (so two fields ALEXANDRA DAMIR, BUCURESTI will produce the hash ALEXANDRADAMIRBUCURESTI (consider using a more advanced hashing algorithm for better unpredictable IDs <- talk about this too)) 
+    and use it as ID of the element in the DB. The result of this is: we don't have to delete any items, because we're doing
+    a PUT operation, such that only new items will be added to the DB, so we're saving a lot of resources because we don't need to drop the table and all that, but.... There is a high possibility that the
+    data in our DB will be different from the data from data.gov... Keep in mind that if the entity is updated (by the user, with other fields (e.g. address)), 
+    you have to delete the existing entity, create a new hash and create a new entity with the old fields + the updated fields. This solution is only done because we have to deal with updating the data with data.gov,
+    but it also means that the data can be updated only by addition, no deletion and no item update (if something changed in data.gov a new item will be created). This problem is because there is no static identifier
+    for entries on data.gov, even the authorization number for translators can be changed if they change their name for instance... This will lead to a lot of redundant data. I think this is the best option right now...
+
+    POSSIBLE ANSWER (WRONG - see comment below): we could reserve a downtime for our app in which it will not be available. Like bank apps are doing: We're gonna be down for maintenance or something like that. In that downtime, all the items are deleted and then the new items are placed in the DB
+
+    POSSIBLE ANSWER (WRONG - see comment below): we could create a new table with new data, drop the old table, and update the app to use the new table
+
+    COMMENT: The last two options are gonna delete the reviews... so no go. We need to keep the same items.
+
+    ^ talk about all of this when updating the document ^
+
+
+
+
+
+    talk about the number of items in translators dataset
+  -->
 </body>
 </html>
