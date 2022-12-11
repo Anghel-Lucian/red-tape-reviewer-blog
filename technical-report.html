@@ -432,6 +432,24 @@
 
 
     talk about the number of items in translators dataset
+
+
+
+
+
+
+    talk about the fact that you went with a single table for offices to be more cost effective
+    (provisioned WCUs and RCUs cost money even though you don't use them, so fewer table would mean
+    less money to pay for DB)
+
+
+
+
+    talk about the strategy used in the poller service to ensure that fresh files are not replaced
+    (adding date between [[ and ]] characters on the file name when they are downloaded. The date
+    will be the last_modified proeprty of the resource, and if the date of the current file is
+    equal or greater than that of the requested resource, then we know that we have the latest file
+    and we can skip the download)
   -->
 </body>
 </html>
