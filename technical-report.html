@@ -403,7 +403,24 @@
 
   <!-- TODO: 
     talk about difficulties with the polling service: WCU limitations and cost, need of throttling for keeping WCUs under some amount a second (currently 5) so we don't get billed a lot and because we had only provisioning of 1 WCU per second when we first created the table, massive oversight that lead to a lot of scary errors in the AWS console
+    // scratch that... we moved to a document db for RDF storage, no more DynamoDB. INSTEAD talk about throttling of DB insertion because you have limits on the Mapbox API
 
+
+
+
+    talk about what you used from schema.org vocabulary (Notary, Review, etc.)
+
+
+
+
+    talk about how you used the Place (also from schema.org) and how you added a map to the service. First thought: return the URL of the map, the URL will point to the client app, when accessed, a map will render with the marker exactly on the coordinates
+    of the place. Make a diagram of how you render the map and how the marker is correctly placed.
+
+
+
+
+
+    go to stardog and generate some rdf graph examples for notaries and translators
 
 
 
@@ -423,7 +440,7 @@
 
     POSSIBLE ANSWER (WRONG - see comment below): we could create a new table with new data, drop the old table, and update the app to use the new table
 
-    COMMENT: The last two options are gonna delete the reviews... so no go. We need to keep the same items.
+    COMMENT: The last two options are gonna delete the reviews... so no go. We need to keep the same items. There is no real way to update an item, only to add a new one, especially in the Marklogic DB, which only has create nodes operations (I think).
 
     ^ talk about all of this when updating the document ^
 
